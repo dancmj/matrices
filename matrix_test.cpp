@@ -1,23 +1,21 @@
 #include <cgreen/cgreen.h>
+#include "matrix.h"
 using namespace cgreen;
+
 
 Describe(Matrix);
 BeforeEach(Matrix) {}
 AfterEach(Matrix) {}
 
-Ensure(Matrix, passes_this_test) {
-    assert_that(1 == 1);
-}
-
-Ensure(Matrix, fails_this_test) {
-    assert_that(0 == 1);
+Ensure(Matrix, has_correct_rows_and_columns) {
+  Matrix dan(2,2);
+  assert_that(dan.m, is_equal_to(2));
+  assert_that(dan.n, is_equal_to(2));
 }
 
 int main(int argc, char **argv) {
-    TestSuite *suite = create_test_suite();
-    add_test_with_context(suite, Matrix, passes_this_test);
-    add_test_with_context(suite, Matrix, fails_this_test);
-    return run_test_suite(suite, create_text_reporter());
-}
+  TestSuite *suite = create_test_suite();
+  add_test_with_context(suite, Matrix, has_correct_rows_and_columns);
 
-// g++ -Wall -I /usr/local/include -L /usr/local/lib matrix_test.cpp -lcgreen++ -o matrix_test; ./matrix_test
+  return run_test_suite(suite, create_text_reporter());
+}

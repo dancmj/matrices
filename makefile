@@ -1,4 +1,4 @@
-CC= g++
+CC= clang++
 CPPFLAGS= -Wall -I /usr/local/include
 LDFLAGS= -L /usr/local/lib
 SOURCES= matrix.cpp
@@ -9,6 +9,6 @@ all:
 main:
 	$(CC) $(SOURCES) main.cpp -o main.o
 test:
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -lcgreen++ $(TESTS) -o test.o
+	$(CC) $(SOURCES) $(CPPFLAGS) $(LDFLAGS) -lcgreen++ $(TESTS) -o test.o
 clean:
 	rm *o

@@ -3,9 +3,11 @@
 
 class Matrix {
 public:
+  const int m, n;
   Matrix(int, int);
+  ~Matrix();
+
 private:
-  int m, n;
   float **p;
 };
 
