@@ -78,7 +78,7 @@ Ensure(Matrix, sum_is_done_correctly) {
   for(int i = 0; i < m ; ++i ) {
     test_array[i] = new float[n];
     for(int j = 0; j < n ; ++j ) {
-      test_array[i][j] = 1 + m;
+      test_array[i][j] = 1 + i;
     }
   }
 
@@ -90,7 +90,45 @@ Ensure(Matrix, sum_is_done_correctly) {
 
   for(int i = 0; i < m && !end_test ; ++i ) {
     for(int j = 0; j < n ; ++j ) {
-      if(sum[i][j] !=  m) {
+      if(sum[i][j] !=  1 + i) {
+        end_test = true;
+        break;
+      }
+    }
+  }
+
+  assert_that(end_test, is_false);
+}
+
+Ensure(Matrix, substraction_is_done_correctly) {
+  const int m = 3;
+  const int n = 3;
+  float **test_array_1;
+  float **test_array_2;
+  bool end_test = false;
+
+
+  test_array_1 = new float*[m];
+  test_array_2 = new float*[m];
+
+  for(int i = 0; i < m ; ++i ) {
+    test_array_1[i] = new float[n];
+    test_array_2[i] = new float[n];
+    for(int j = 0; j < n ; ++j ) {
+      test_array_1[i][j] = i;
+      test_array_2[i][j] = 20;
+    }
+  }
+
+  Matrix minuend(m, n, test_array_2);
+  Matrix subtrahend(m, n, test_array_1);
+  Matrix difference(m, n);
+
+  difference = minuend - subtrahend;
+
+  for(int i = 0; i < m && !end_test ; ++i ) {
+    for(int j = 0; j < n ; ++j ) {
+      if(difference[i][j] !=  20 - i) {
         end_test = true;
         break;
       }
@@ -109,6 +147,7 @@ int main(int argc, char **argv) {
   add_test_with_context(suite, Matrix, is_initialized_correctly_with_2_params);
   add_test_with_context(suite, Matrix, is_initialized_correctly_with_3_params);
   add_test_with_context(suite, Matrix, sum_is_done_correctly);
+  add_test_with_context(suite, Matrix, substraction_is_done_correctly);
 
   return run_test_suite(suite, create_text_reporter());
 }

@@ -36,6 +36,20 @@ Matrix Matrix::operator+(const Matrix addend) const
   return sum;
 }
 
+Matrix Matrix::operator-(const Matrix subtrahend) const
+{
+  if(rows != subtrahend.rows ||  columns != subtrahend.columns) throw "Error, matrix sizes are not equivalent.";
+
+  Matrix difference(rows, columns);
+  for(int i = 0; i < rows ; ++i ) {
+    for(int j = 0; j < columns ; ++j ) {
+      difference[i][j] = p[i][j] - subtrahend[i][j];
+    }
+  }
+
+  return difference;
+}
+
 Matrix & Matrix::operator=(const Matrix &m)
 {
   if(this != &m) {
@@ -62,5 +76,6 @@ Matrix & Matrix::operator=(const Matrix &m)
 
 Matrix::~Matrix()
 {
-
+  for(int i = 0; i < rows ; ++i ) if(p[i] != 0) delete [] p[i];
+  if(p != 0) delete [] p;
 }
