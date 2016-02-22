@@ -188,6 +188,44 @@ Ensure(Matrix, multiplication_is_done_correctly) {
   assert_that(end_test, is_false);
 }
 
+Ensure(Matrix, multiplication_by_scalar_is_done_correctly) {
+  const int m = 3;
+  const int n = 3;
+  int counter = 0;
+  float **test_array_1;
+  float answer[3][3] = {{0, 2, 4},
+                        {6, 8, 10},
+                        {12, 14, 16}};
+  bool end_test = false;
+
+  test_array_1 = new float*[m];
+
+  for(int i = 0; i < m ; ++i ) {
+    test_array_1[i] = new float[n];
+    for(int j = 0; j < n ; ++j ) {
+      test_array_1[i][j] = counter;
+      counter++;
+    }
+  }
+
+  Matrix multiplicand(m, n, test_array_1);
+  Matrix product(m, n);
+  Matrix product_2(m, n);
+
+  product = multiplicand * 2;
+  product_2 = 2 * multiplicand;
+
+  for(int i = 0; i < m && !end_test ; ++i ) {
+    for(int j = 0; j < n; ++j ) {
+      if(product[i][j] != answer[i][j] || product_2[i][j] != answer[i][j]) {
+        end_test = true;
+        break;
+      }
+    }
+  }
+
+  assert_that(end_test, is_false);
+}
 
 
 int main(int argc, char **argv) {
@@ -199,6 +237,7 @@ int main(int argc, char **argv) {
   add_test_with_context(suite, Matrix, sum_is_done_correctly);
   add_test_with_context(suite, Matrix, substraction_is_done_correctly);
   add_test_with_context(suite, Matrix, multiplication_is_done_correctly);
+  add_test_with_context(suite, Matrix, multiplication_by_scalar_is_done_correctly);
 
   return run_test_suite(suite, create_text_reporter());
 }

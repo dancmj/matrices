@@ -91,6 +91,19 @@ Matrix Matrix::operator*(const Matrix &multiplier) const
   return product;
 }
 
+Matrix Matrix::operator*(const float scalar) const
+{
+  Matrix product(rows, columns);
+
+  for(int i = 0; i < rows; ++i) {
+    for(int j = 0; j < columns; ++j) {
+      product[i][j] = p[i][j] * scalar;
+    }
+  }
+
+  return product;
+}
+
 Matrix::~Matrix()
 {
 
