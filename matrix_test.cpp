@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <cgreen/cgreen.h>
 #include <string>
+#include <iostream>
 #include "matrix.h"
 using namespace cgreen;
+using namespace std;
 
 #define HI 100
 #define LO -100
@@ -138,6 +140,54 @@ Ensure(Matrix, substraction_is_done_correctly) {
   assert_that(end_test, is_false);
 }
 
+Ensure(Matrix, multiplication_is_done_correctly) {
+  const int m = 3;
+  const int n = 4;
+  int counter = 0;
+  float **test_array_1;
+  float **test_array_2;
+  float answer[3][3] = {{12, 12, 12},
+                        {44, 44, 44},
+                        {76, 76, 76}};
+  bool end_test = false;
+
+
+  test_array_1 = new float*[m];
+  test_array_2 = new float*[n];
+
+  for(int i = 0; i < m ; ++i ) {
+    test_array_1[i] = new float[n];
+    for(int j = 0; j < n ; ++j ) {
+      test_array_1[i][j] = counter;
+      counter++;
+    }
+  }
+
+  for(int i = 0; i < n ; ++i ) {
+    test_array_2[i] = new float[m];
+    for(int j = 0; j < m ; ++j ) {
+      test_array_2[i][j] = 2;
+    }
+  }
+
+  Matrix multiplicand(m, n, test_array_1);
+  Matrix multiplier(n, m, test_array_2);
+  Matrix product(multiplicand.rows, multiplier.columns);
+
+  product = multiplicand * multiplier;
+
+  for(int i = 0; i < multiplicand.rows && !end_test ; ++i ) {
+    for(int j = 0; j < multiplier.columns; ++j ) {
+      if(product[i][j] != answer[i][j]) {
+        end_test = true;
+        break;
+      }
+    }
+  }
+
+  assert_that(end_test, is_false);
+}
+
 
 
 int main(int argc, char **argv) {
@@ -148,6 +198,7 @@ int main(int argc, char **argv) {
   add_test_with_context(suite, Matrix, is_initialized_correctly_with_3_params);
   add_test_with_context(suite, Matrix, sum_is_done_correctly);
   add_test_with_context(suite, Matrix, substraction_is_done_correctly);
+  add_test_with_context(suite, Matrix, multiplication_is_done_correctly);
 
   return run_test_suite(suite, create_text_reporter());
 }

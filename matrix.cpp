@@ -74,8 +74,24 @@ Matrix & Matrix::operator=(const Matrix &m)
   return *this;
 }
 
+Matrix Matrix::operator*(const Matrix &multiplier) const
+{
+  if(columns != multiplier.rows) throw "Error, multiplicand's columns and multiplier's rows are not equal.";
+
+  Matrix product(rows, multiplier.columns);
+
+  for(int i = 0; i < rows; ++i) {
+    for(int j = 0; j < multiplier.columns; ++j) {
+      for (int k = 0; k < columns; ++k) {
+        product[i][j] += p[i][k] * multiplier[k][j];
+      }
+    }
+  }
+
+  return product;
+}
+
 Matrix::~Matrix()
 {
-  for(int i = 0; i < rows ; ++i ) if(p[i] != 0) delete [] p[i];
-  if(p != 0) delete [] p;
+
 }

@@ -12,6 +12,7 @@ public:
   Matrix & operator=(const Matrix&);
   Matrix operator+(const Matrix) const;
   Matrix operator-(const Matrix) const;
+  Matrix operator*(const Matrix&) const;
 
   Proxy operator[](int index) const {
     return Proxy(p[index]);
